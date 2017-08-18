@@ -157,20 +157,18 @@ namespace testapp
                         }
                     }
                     string key = await getKey(user);
-                    //Syncing local database to the firebase            
                     var firebaseItems = await firebase.Child("Users").Child(key).Child("Images").OnceAsync<string>(); //Getting image urls from firebase
                     var firebaseImageList = new List<String>();
                     if(firebaseItems != null)
                     {
                         foreach (var stuff in firebaseItems)
                         {
-                            if (stuff.Object != null)
+                            if (stuff.Object != null) //stuff.Object holds the imageUri
                             {
                                 firebaseImageList.Add(stuff.Object.ToString());
                             }
                         }
                     }
-
                     var uniqueLocalImageList = localImageList.Except(firebaseImageList).ToList(); //Gets the unique LocalDB List
                     var uniqueFirebaseImageList = firebaseImageList.Except(localImageList).ToList(); //Gets the unique Firebase List
                     
@@ -186,7 +184,6 @@ namespace testapp
                         //Updating the firebase password
                         string newPass = updatedLocalDb.password;
                         await firebase.Child("Users").Child(key).Child("Password").PutAsync(newPass);
-                //Toast.MakeText(this, "Password updated online", ToastLength.Short).Show();
 
                 Toast.MakeText(this, "Done Syncing", ToastLength.Short).Show();
                 }
