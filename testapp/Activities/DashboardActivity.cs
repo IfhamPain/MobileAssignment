@@ -1,23 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-
 using Android.App;
 using Android.Content;
 using Android.OS;
-using Android.Runtime;
-using Android.Views;
 using Android.Widget;
-using Android.Graphics;
-using Android.Provider;
-using SQLite.Net;
-using SQLite.Net.Platform.XamarinAndroid;
-using Firebase;
-using Firebase.Xamarin.Database;
 using Firebase.Xamarin.Database.Query;
-using Android.Net;
-using System.Threading.Tasks;
 using static testapp.LocalDB;
 using static testapp.FirebaseDB;
 
@@ -52,7 +40,7 @@ namespace testapp
             
             String currentUser = Intent.GetStringExtra("MyData") ?? ("Data not found");
             Toast.MakeText(this, "Welcome " + currentUser, ToastLength.Short).Show();
-            user.TempUsername = currentUser; //Storing the current username in user object to retrieve it later
+            user.Username = currentUser; //Storing the current username in user object to retrieve it later
             btnUpdate.Enabled = false; //Disabling the update button so user won't send empty images
 
         }
@@ -60,7 +48,7 @@ namespace testapp
         private void BtnChangePassword_Click(object sender, EventArgs e)
         {
             var changePass = new Intent(this, typeof(UpdateUserActivity));
-            changePass.PutExtra("currentUsername", user.TempUsername);
+            changePass.PutExtra("currentUsername", user.Username);
             StartActivity(changePass);
         }
 
@@ -107,7 +95,7 @@ namespace testapp
 
         private void BtnUpdate_Click(object sender, EventArgs e)
         {
-            var currentUser = GetCurrentUser(user.TempUsername);
+            var currentUser = GetCurrentUser(user.Username);
             try
             {
                 var localImageItems = db.Query<ImageTable>("select imageUri from ImageTable where userName = ? and imageUri is not null", currentUser.username);
@@ -143,7 +131,7 @@ namespace testapp
         {
             if ((requestCode == PickImageId) && (resultCode == Result.Ok) && (data != null))
             {
-                string userName = user.TempUsername; //Retrieving the current username
+                string userName = user.Username; //Retrieving the current username
                 Android.Net.Uri uri = data.Data;
                 imageViewPic.SetImageURI(uri);
                 image.ImageUri = uri.ToString();
@@ -153,12 +141,12 @@ namespace testapp
 
         private async void SyncDatabase()
         {
-                string userName = user.TempUsername;
+                string userName = user.Username;
                 var updatedLocalDb = GetCurrentUser(userName);
                 int userId = updatedLocalDb.id;
                 try
                 {
-                    var Localitems = db.Query<ImageTable>("select imageUri from ImageTable where userName = ? and imageUri is not null", user.TempUsername);
+                    var Localitems = db.Query<ImageTable>("select imageUri from ImageTable where userName = ? and imageUri is not null", user.Username);
                     var localImageList = new List<String>();
                     if(Localitems != null)
                     {
@@ -193,7 +181,7 @@ namespace testapp
 
                     for(var y = 0; y < uniqueFirebaseImageList.Count; y++)
                     {
-                        InsertImage(uniqueFirebaseImageList[y], user.TempUsername); //Calling InsertImage method to insert data to local db ImageTable
+                        InsertImage(uniqueFirebaseImageList[y], user.Username); //Calling InsertImage method to insert data to local db ImageTable
                     }
                         //Updating the firebase password
                         string newPass = updatedLocalDb.password;

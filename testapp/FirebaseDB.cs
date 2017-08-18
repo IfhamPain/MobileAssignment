@@ -24,18 +24,16 @@ namespace testapp
         public static async Task<String> getKey(User user)
         {
             var items = await firebase.Child("Users").OnceAsync<User>();
-
+            string key = "";
             foreach (var stuff in items)
             {
-                if (stuff.Object.Username.Equals(user.TempUsername))
+                if (stuff.Object.Username.Equals(user.Username))
                 {
-                    string key = stuff.Key.ToString(); //Getting the unique user key from firebase
-                    user.UserKey = key;
-                    return (user.UserKey);
+                    key = stuff.Key.ToString(); //Getting the unique user key from firebase
+                    break;
                 }
-
             }
-            return (user.UserKey);
+            return (key);
 
         } //Getting the user's unique key
         public static bool IsConnected(Context context)

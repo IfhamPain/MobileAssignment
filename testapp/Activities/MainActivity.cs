@@ -3,7 +3,6 @@ using Android.Widget;
 using Android.OS;
 using System;
 using Android.Content;
-using Android.Net;
 using System.Collections.Generic;
 using static testapp.LocalDB;
 using static testapp.FirebaseDB;
@@ -29,17 +28,16 @@ namespace testapp
             btnLogin.Click += BtnLogin_Click;
 
             CreateDB(); 
-
         }
         
         private async void BtnLogin_Click(object sender, System.EventArgs e)
         {
-            string username = textUsername.Text;
-            string password = textPassword.Text;
-
-            if (IsConnected(this)) //Using Firebase username and password to validate login credentials if the user's online
+            try
             {
-                try
+                string username = textUsername.Text;
+                string password = textPassword.Text;
+
+                if (IsConnected(this)) //Using Firebase username and password to validate login credentials if the user's online
                 {
                     var userDetail = new List<string>();
                     Dictionary<string, int> dictionary = new Dictionary<string, int>();
@@ -58,20 +56,18 @@ namespace testapp
 
                         if (AllUsersUsername.Equals(username) && AllUsersPassword.Equals(password)) //Validating login credentials
                         {
-                            
                             isLoggedIn = true;
                             break;
                         }
                     }
-                    if(isLoggedIn)
+                    if (isLoggedIn)
                     {
                         db.CreateTable<UserTable>();
                         var tableData = db.Query<UserTable>("select username from UserTable where username = ?", username);
-                        if(tableData.Count == 0) //Checking whether the user's already in local database
+                        if (tableData.Count == 0) //Checking whether the user's already in local database
                         {
                             InsertUserTable(username, password);
                         }
-                        
                         Toast.MakeText(this, "Login Successful", ToastLength.Short).Show();
                         var dashboard = new Intent(this, typeof(DashboardActivity));
                         dashboard.PutExtra("MyData", username);
@@ -82,15 +78,7 @@ namespace testapp
                         Toast.MakeText(this, "Invalid Username or Password", ToastLength.Short).Show();
                     }
                 }
-                catch(Exception ex)
-                {
-                    Toast.MakeText(this, ex.ToString(), ToastLength.Long).Show();
-                }
-            }
-
-            else if (!IsConnected(this)) //Using local database details to validate login if user is offline
-            {
-                try
+                else if (!IsConnected(this)) //Using local database details to validate login if user is offline
                 {
                     var tableData = db.Query<UserTable>("select username, password from UserTable where username = ? and password = ?", username, password);
                     if (tableData.Count > 0)
@@ -105,11 +93,12 @@ namespace testapp
                         Toast.MakeText(this, "Invalid Username or Password", ToastLength.Short).Show();
                     }
                 }
-                catch (Exception ex)
-                {
-                    Toast.MakeText(this, ex.ToString(), ToastLength.Short).Show();
-                }
             }
+            catch(Exception ex)
+            {
+                Toast.MakeText(this, ex.ToString(), ToastLength.Short).Show();
+            }
+           
         }
 
         private void BtnRegister_Click(object sender, System.EventArgs e)

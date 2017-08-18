@@ -31,7 +31,7 @@ namespace testapp
         {
             base.OnCreate(savedInstanceState);
             SetContentView(Resource.Layout.UpdateUser);
-            user.TempUsername = Intent.GetStringExtra("currentUsername") ?? ("Data not found");
+            user.Username = Intent.GetStringExtra("currentUsername") ?? ("Data not found");
             btnUpdatePassword = FindViewById<Button>(Resource.Id.btnUpdatePassword);
             btnUpdatePassword.Click += BtnUpdatePassword_Click;
             textNewPassword = FindViewById<EditText>(Resource.Id.textNewPassword); 
@@ -40,7 +40,7 @@ namespace testapp
 
         private void BtnUpdatePassword_Click(object sender, EventArgs e)
         {
-            var currentUser = GetCurrentUser(user.TempUsername); //Calling LocalDBs' GetCurrentUser method
+            var currentUser = GetCurrentUser(user.Username); //Calling LocalDBs' GetCurrentUser method
 
             if (currentUser.password.Equals(textCurrentPassword.Text))
             {
