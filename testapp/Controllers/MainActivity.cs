@@ -39,28 +39,7 @@ namespace testapp
 
                 if (IsConnected(this)) //Using Firebase username and password to validate login credentials if the user's online
                 {
-                    var userDetail = new List<string>();
-                    Dictionary<string, int> dictionary = new Dictionary<string, int>();
-                    var firebaseAllUsers = await firebase.Child("Users").OnceAsync<UserTable>(); //Get all user detail from firebase
-                    var allUsers = new Dictionary<string, string>();
-                    foreach (var firebaseUser in firebaseAllUsers)
-                    {
-                        allUsers.Add(firebaseUser.Object.username, firebaseUser.Object.password); //Storing each user detail in allUsers Dictionary
-                    }
-                    bool isLoggedIn = false;
-
-                    foreach (var pair in allUsers)
-                    {
-                        string AllUsersUsername = pair.Key;
-                        string AllUsersPassword = pair.Value;
-
-                        if (AllUsersUsername.Equals(username) && AllUsersPassword.Equals(password)) //Validating login credentials
-                        {
-                            isLoggedIn = true;
-                            break;
-                        }
-                    }
-                    if (isLoggedIn)
+                    if (await userExistFirebase(username, password) == 1)
                     {
                         db.CreateTable<UserTable>();
                         var tableData = db.Query<UserTable>("select username from UserTable where username = ?", username);

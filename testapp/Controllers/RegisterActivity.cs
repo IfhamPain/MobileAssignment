@@ -25,7 +25,6 @@ namespace testapp
             textUsername = FindViewById<EditText>(Resource.Id.textUsername);
             textPassword = FindViewById<EditText>(Resource.Id.textPassword);
             btnRegister.Click += BtnRegister_Click;
-
         }
 
         private async void BtnRegister_Click(object sender, EventArgs e)
@@ -34,12 +33,9 @@ namespace testapp
             {
                 try
                 {
-                    InsertUserTable(textUsername.Text, textPassword.Text);
-                    Toast.MakeText(this, "Record Added Successfully", ToastLength.Short).Show();
                     user.Username = textUsername.Text;
                     user.Password = textPassword.Text;
                     await addUser(user);
-                    StartActivity(typeof(MainActivity));
                 }
                 catch (Exception ex)
                 {
@@ -51,20 +47,31 @@ namespace testapp
                 Toast.MakeText(this, "You have to be online to register a new account", ToastLength.Short).Show();
             }
         }
-        public async Task<string>addUser(User user)
+        public async Task addUser(User user)
         {
             try
             {
                 if (IsConnected(this))
                 {
-                    await firebase.Child("Users").PostAsync(user); //Uploading user data to firebase
+                    int result = await userExistFirebase(user.Username, user.Password);
+                    if ( result == 0 || result == 1)
+                    {
+                        Toast.MakeText(this, "Username already exist in firebase database", ToastLength.Short).Show();
+                    }
+                    else
+                    {
+                        InsertUserTable(user.Username, user.Password);
+                        Toast.MakeText(this, "Record Added Successfully", ToastLength.Short).Show();
+                        await firebase.Child("Users").PostAsync(user); //Uploading user data to firebase
+                        StartActivity(typeof(MainActivity));
+                    }
+                    
                 }
             }
             catch (Exception ex)
             {
                 Toast.MakeText(this, ex.ToString(), ToastLength.Short).Show();
             }
-            return "something";
         }
 
     }
