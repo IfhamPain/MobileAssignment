@@ -39,7 +39,7 @@ namespace testapp
 
                 if (IsConnected(this)) //Using Firebase username and password to validate login credentials if the user's online
                 {
-                    if (await userExistFirebase(username, password) == 1)
+                    if (await userStatus(username, password) == 1)
                     {
                         db.CreateTable<UserTable>();
                         var tableData = db.Query<UserTable>("select username from UserTable where username = ?", username);

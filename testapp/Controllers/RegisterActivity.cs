@@ -53,7 +53,7 @@ namespace testapp
             {
                 if (IsConnected(this))
                 {
-                    int result = await userExistFirebase(user.Username, user.Password);
+                    int result = await userStatus(user.Username, user.Password);
                     if ( result == 0 || result == 1)
                     {
                         Toast.MakeText(this, "Username already exist in firebase database", ToastLength.Short).Show();

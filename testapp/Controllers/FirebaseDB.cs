@@ -51,7 +51,7 @@ namespace testapp
 
         } //Checking if user is online
 
-        public static async Task<int> userExistFirebase(string username, string password)
+        public static async Task<int> userStatus(string username, string password)
         {
             int result = -1; //If user or username does not exist
             var firebaseAllUsers = await firebase.Child("Users").OnceAsync<UserTable>(); //Get all user detail from firebase
