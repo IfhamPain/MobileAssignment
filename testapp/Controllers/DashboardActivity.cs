@@ -95,10 +95,9 @@ namespace testapp
 
         private void BtnUpdate_Click(object sender, EventArgs e)
         {
-            var currentUser = GetCurrentUser(user.Username);
             try
             {
-                var localImageItems = db.Query<ImageTable>("select imageUri from ImageTable where userName = ? and imageUri is not null", currentUser.username);
+                var localImageItems = db.Query<ImageTable>("select imageUri from ImageTable where userName = ? and imageUri is not null", user.Username);
                 var localImageList = new List<string>();
                 foreach (var imageUri in localImageItems)
                 {
@@ -107,7 +106,7 @@ namespace testapp
                 }
                 if (!(localImageList.Contains(image.ImageUri)) && image.ImageUri != null)
                 {
-                    image.UserName = currentUser.username;
+                    image.UserName = user.Username;
                     InsertImage(image.ImageUri, image.UserName);
                 }
             }
