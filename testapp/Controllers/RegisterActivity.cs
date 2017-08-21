@@ -54,7 +54,7 @@ namespace testapp
                 if (IsConnected(this))
                 {
                     int result = await userStatus(user.Username, user.Password);
-                    if ( result == 0 || result == 1)
+                    if ( result == 0 || result == 1) //If username or the exact user already exist in firebase db
                     {
                         Toast.MakeText(this, "Username already exist in firebase database", ToastLength.Short).Show();
                     }

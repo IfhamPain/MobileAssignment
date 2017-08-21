@@ -171,7 +171,7 @@ namespace testapp
                     var uniqueLocalImageList = localImageList.Except(firebaseImageList).ToList(); //Gets the unique LocalDB List
                     var uniqueFirebaseImageList = firebaseImageList.Except(localImageList).ToList(); //Gets the unique Firebase List
                     
-                    for(var i = 0; i < uniqueLocalImageList.Count; i++)
+                    for(var i = 0; i < uniqueLocalImageList.Count; i++) //Inserting data to firebase db
                     {
                         await firebase.Child("Users").Child(key).Child("Images").PostAsync(uniqueLocalImageList[i]);
                     } 

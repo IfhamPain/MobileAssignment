@@ -35,7 +35,6 @@ namespace testapp
             btnUpdatePassword = FindViewById<Button>(Resource.Id.btnUpdatePassword);
             btnUpdatePassword.Click += BtnUpdatePassword_Click;
             textNewPassword = FindViewById<EditText>(Resource.Id.textNewPassword); 
-            textCurrentPassword = FindViewById<EditText>(Resource.Id.textCurrentPassword);
         }
 
         private void BtnUpdatePassword_Click(object sender, EventArgs e)
