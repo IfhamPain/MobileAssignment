@@ -1,22 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
 using Android.App;
 using Android.Content;
 using Android.OS;
-using Android.Runtime;
-using Android.Views;
 using Android.Widget;
-using Firebase.Xamarin.Database;
-using SQLite.Net;
-using SQLite.Net.Platform.XamarinAndroid;
-using Android.Net;
-using System.Threading.Tasks;
-using Firebase.Xamarin.Database.Query;
 using static testapp.LocalDB;
-using static testapp.FirebaseDB;
 
 namespace testapp
 {
@@ -34,7 +21,8 @@ namespace testapp
             user.Username = Intent.GetStringExtra("currentUsername") ?? ("Data not found");
             btnUpdatePassword = FindViewById<Button>(Resource.Id.btnUpdatePassword);
             btnUpdatePassword.Click += BtnUpdatePassword_Click;
-            textNewPassword = FindViewById<EditText>(Resource.Id.textNewPassword); 
+            textNewPassword = FindViewById<EditText>(Resource.Id.textNewPassword);
+            textCurrentPassword = FindViewById<EditText>(Resource.Id.textCurrentPassword);
         }
 
         private void BtnUpdatePassword_Click(object sender, EventArgs e)

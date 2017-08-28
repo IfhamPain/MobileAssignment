@@ -44,4 +44,14 @@
             android:id="@+id/btnSync"
             android:layout_marginLeft="1.0dp" />
     </LinearLayout>
+    <Button
+        android:text="Delete Image"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/btnDelete" />
+    <Button
+        android:text="Logout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/btnLogout" />
 </LinearLayout>

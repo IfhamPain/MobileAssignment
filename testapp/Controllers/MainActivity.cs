@@ -3,7 +3,6 @@ using Android.Widget;
 using Android.OS;
 using System;
 using Android.Content;
-using System.Collections.Generic;
 using static testapp.LocalDB;
 using static testapp.FirebaseDB;
 
@@ -19,7 +18,7 @@ namespace testapp
         protected override void OnCreate(Bundle bundle)
         {
             base.OnCreate(bundle);
-            SetContentView (Resource.Layout.Main);
+            SetContentView(Resource.Layout.Main);
             btnLogin = FindViewById<Button>(Resource.Id.buttonLogin);
             btnRegister = FindViewById<Button>(Resource.Id.buttonRegister);
             textUsername = FindViewById<EditText>(Resource.Id.textUsername);
@@ -27,9 +26,9 @@ namespace testapp
             btnRegister.Click += BtnRegister_Click;
             btnLogin.Click += BtnLogin_Click;
 
-            CreateDB(); 
+            CreateDB();
         }
-        
+
         private async void BtnLogin_Click(object sender, System.EventArgs e)
         {
             try
@@ -59,6 +58,7 @@ namespace testapp
                 }
                 else if (!IsConnected(this)) //Using local database details to validate login if user is offline
                 {
+                    db.CreateTable<UserTable>();
                     var tableData = db.Query<UserTable>("select username, password from UserTable where username = ? and password = ?", username, password);
                     if (tableData.Count > 0)
                     {
@@ -73,11 +73,11 @@ namespace testapp
                     }
                 }
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 Toast.MakeText(this, ex.ToString(), ToastLength.Short).Show();
             }
-           
+
         }
 
         private void BtnRegister_Click(object sender, System.EventArgs e)

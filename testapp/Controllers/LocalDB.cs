@@ -1,6 +1,5 @@
 ﻿using SQLite.Net;
 using SQLite.Net.Platform.XamarinAndroid;
-using System.IO;
 
 namespace testapp
 {
@@ -13,12 +12,10 @@ namespace testapp
         {
             var currentUser = db.Table<UserTable>().Where(c => c.username.Equals(username)).FirstOrDefault(); //Query to get the current username
             return currentUser;
-         
+
         }
         public static void InsertUserTable(string uName, string pass)
         {
-            db.CreateTable<UserTable>();
-            db.CreateTable<ImageTable>();
             var userTable = new UserTable
             {
                 username = uName,
@@ -50,12 +47,29 @@ namespace testapp
 
         public static string CreateDB()
         {
+            db.CreateTable<UserTable>();
+            db.CreateTable<ImageTable>();
+            db.CreateTable<DeletedTable>();
             string output = "";
             output += "Creating database if not exist";
-            string dbPath = Path.Combine(System.Environment.GetFolderPath(System.Environment.SpecialFolder.Personal), "dbUsers");
             output += "\n Database created";
             return output;
+
+
         }
 
+        public static void DeleteImageTable(string imageUri, string username)
+        {
+            db.CreateTable<DeletedTable>();
+            var deleteImageTable = new DeletedTable
+            {
+                imageUri = imageUri,
+                userName = username
+            };
+            if(imageUri != null)
+            {
+                db.Insert(deleteImageTable);
+            }
+        }
     }
 }

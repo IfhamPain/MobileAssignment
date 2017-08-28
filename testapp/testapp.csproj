@@ -163,6 +163,8 @@
     <Compile Include="Controllers\LocalDB.cs" />
     <Compile Include="Controllers\UpdateUserActivity.cs" />
     <Compile Include="Controllers\DashboardActivity.cs" />
+    <Compile Include="Controllers\ViewImagesActivity.cs" />
+    <Compile Include="Models\DeletedTable.cs" />
     <Compile Include="Models\Image.cs" />
     <Compile Include="Models\ImageTable.cs" />
     <Compile Include="Controllers\RegisterActivity.cs" />
@@ -185,6 +187,9 @@
       <SubType>Designer</SubType>
     </AndroidResource>
     <AndroidResource Include="Resources\layout\UpdateUser.axml">
+      <SubType>Designer</SubType>
+    </AndroidResource>
+    <AndroidResource Include="Resources\layout\ViewImages.axml">
       <SubType>Designer</SubType>
     </AndroidResource>
   </ItemGroup>

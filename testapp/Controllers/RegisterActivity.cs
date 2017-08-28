@@ -11,7 +11,6 @@ namespace testapp
     [Activity(Label = "Create User")]
     public class RegisterActivity : Activity
     {
-        private const string FirebaseURL = "https://mobile-ifs.firebaseio.com/";
         Button btnRegister;
         EditText textUsername;
         EditText textPassword;
@@ -54,9 +53,9 @@ namespace testapp
                 if (IsConnected(this))
                 {
                     int result = await userStatus(user.Username, user.Password);
-                    if ( result == 0 || result == 1) //If username or the exact user already exist in firebase db
+                    if ((result == 0 || result == 1 || GetCurrentUser(user.Username) != null)) //If username or the exact user already exist in firebase db or username exist in local db
                     {
-                        Toast.MakeText(this, "Username already exist in firebase database", ToastLength.Short).Show();
+                        Toast.MakeText(this, "Username already exist in database", ToastLength.Short).Show();
                     }
                     else
                     {
