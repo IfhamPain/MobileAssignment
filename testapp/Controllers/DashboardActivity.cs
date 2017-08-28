@@ -7,7 +7,7 @@ using Android.OS;
 using Android.Widget;
 using Firebase.Xamarin.Database.Query;
 using static testapp.LocalDB;
-using static testapp.FirebaseDB;
+using Firebase.Xamarin.Database;
 
 namespace testapp
 {
@@ -26,6 +26,8 @@ namespace testapp
         public User user = new User();
         Image image = new Image();
         public List<string> allImages = new List<string>();
+        FirebaseDB firebaseDB = new FirebaseDB();
+        LocalDB localDB = new LocalDB();
 
         protected override void OnCreate(Bundle savedInstanceState)
         {
@@ -48,11 +50,11 @@ namespace testapp
             Toast.MakeText(this, "Welcome " + currentUser, ToastLength.Short).Show();
             user.Username = currentUser; //Storing the current username in user object to retrieve it later
             btnUpdate.Enabled = false; //Disabling the update button so user won't send empty images
-
+            
         }
 
         private void BtnLogout_Click(object sender, EventArgs e)
-        {
+        {    
             StartActivity(typeof(MainActivity));
             Toast.MakeText(this, "You have logged out", ToastLength.Short).Show();
         }
@@ -73,7 +75,7 @@ namespace testapp
             if (localImageList.Count > 0 && localImageList.Contains(image.ImageUri))
             {
                 image.UserName = user.Username;
-                DeleteImageTable(image.ImageUri, image.UserName);
+                localDB.DeleteImageTable(image.ImageUri, image.UserName);
                 Toast.MakeText(this, "Image deleted successfully", ToastLength.Short).Show();
             }
             else
@@ -92,11 +94,11 @@ namespace testapp
 
         private void BtnSync_Click(object sender, EventArgs e)
         {
-            if (IsConnected(this))
+            if (firebaseDB.IsConnected(this))
             {
                 SyncDatabase();
             }
-            else if (!IsConnected(this))
+            else if (!firebaseDB.IsConnected(this))
             {
                 Toast.MakeText(this, "You have to be online to sync", ToastLength.Short).Show();
             }
@@ -146,7 +148,7 @@ namespace testapp
                 if (!(localImageList.Contains(image.ImageUri)) && image.ImageUri != null)
                 {
                     image.UserName = user.Username;
-                    InsertImage(image.ImageUri, image.UserName);
+                    localDB.InsertImage(image.ImageUri, image.UserName);
                 }
             }
             catch (Exception ex)
@@ -180,7 +182,7 @@ namespace testapp
         private async void SyncDatabase()
         {
             string userName = user.Username;
-            var updatedLocalDb = GetCurrentUser(userName);
+            var updatedLocalDb = localDB.GetCurrentUser(userName);
             int userId = updatedLocalDb.id;
             try
             {
@@ -194,8 +196,8 @@ namespace testapp
                             localImageList.Add(stuff.imageUri); //storing the image uri's inside a list
                     }
                 }
-                string key = await getKey(user);
-                var firebaseItems = await firebase.Child("Users").Child(key).Child("Images").OnceAsync<string>(); //Getting image urls from firebase
+                string key = await firebaseDB.getKey(user);
+                var firebaseItems = await FirebaseDB.firebase.Child("Users").Child(key).Child("Images").OnceAsync<string>(); //Getting image urls from firebase
                 var firebaseImageList = new List<String>();
                 if (firebaseItems != null)
                 {
@@ -235,7 +237,7 @@ namespace testapp
                             {
                                 if (firebaseImageList[y].Equals(pair.Value) && deletedImageList[i].Equals(firebaseImageList[y])) 
                                 {
-                                    await firebase.Child("Users").Child(key).Child("Images").Child(pair.Key).DeleteAsync();
+                                    await FirebaseDB.firebase.Child("Users").Child(key).Child("Images").Child(pair.Key).DeleteAsync();
                                 }
                             }
                     }
@@ -248,17 +250,17 @@ namespace testapp
 
                 for (var i = 0; i < uniqueLocalImageList.Count; i++) //Inserting data to firebase db
                 {
-                    await firebase.Child("Users").Child(key).Child("Images").PostAsync(uniqueLocalImageList[i]);
+                    await FirebaseDB.firebase.Child("Users").Child(key).Child("Images").PostAsync(uniqueLocalImageList[i]);
                 }
 
                 for (var y = 0; y < uniqueFirebaseImageList.Count; y++)
                 {
-                    InsertImage(uniqueFirebaseImageList[y], user.Username); //Calling InsertImage method to insert data to local db ImageTable
+                    localDB.InsertImage(uniqueFirebaseImageList[y], user.Username); //Calling InsertImage method to insert data to local db ImageTable
                 }
 
                 //Updating the firebase password
                 string newPass = updatedLocalDb.password;
-                await firebase.Child("Users").Child(key).Child("Password").PutAsync(newPass);
+                await FirebaseDB.firebase.Child("Users").Child(key).Child("Password").PutAsync(newPass);
 
                 Toast.MakeText(this, "Done Syncing", ToastLength.Short).Show();
             }

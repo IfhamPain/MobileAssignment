@@ -7,13 +7,13 @@ using System.Threading.Tasks;
 
 namespace testapp
 {
-    public static class FirebaseDB
+    public class FirebaseDB
     {
         public static string FirebaseURL = "https://mobile-ifs.firebaseio.com/";
         public static FirebaseClient firebase = new FirebaseClient(FirebaseURL);
         public static MainActivity main = new MainActivity();
 
-        public static async Task<String> getKey(User user)
+        public async Task<String> getKey(User user)
         {
             var items = await firebase.Child("Users").OnceAsync<User>();
             string key = "";
@@ -28,7 +28,7 @@ namespace testapp
             return (key);
 
         } //Getting the user's unique key
-        public static bool IsConnected(Context context)
+        public bool IsConnected(Context context)
         {
             ConnectivityManager connectivityManager = (ConnectivityManager)context.GetSystemService(Context.ConnectivityService);
             NetworkInfo netInfo = connectivityManager.ActiveNetworkInfo;
@@ -43,7 +43,7 @@ namespace testapp
 
         } //Checking if user is online
 
-        public static async Task<int> userStatus(string username, string password)
+        public async Task<int> userStatus(string username, string password)
         {
             int result = -1; //If user or username does not exist
             var firebaseAllUsers = await firebase.Child("Users").OnceAsync<UserTable>(); //Get all user detail from firebase

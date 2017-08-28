@@ -3,7 +3,6 @@ using Android.App;
 using Android.Content;
 using Android.OS;
 using Android.Widget;
-using static testapp.LocalDB;
 
 namespace testapp
 {
@@ -14,6 +13,7 @@ namespace testapp
         EditText textCurrentPassword;
         Button btnUpdatePassword;
         User user = new User();
+        LocalDB localDB = new LocalDB();
         protected override void OnCreate(Bundle savedInstanceState)
         {
             base.OnCreate(savedInstanceState);
@@ -27,11 +27,11 @@ namespace testapp
 
         private void BtnUpdatePassword_Click(object sender, EventArgs e)
         {
-            var currentUser = GetCurrentUser(user.Username); //Calling LocalDBs' GetCurrentUser method
+            var currentUser = localDB.GetCurrentUser(user.Username); //Calling LocalDBs' GetCurrentUser method
 
             if (currentUser.password.Equals(textCurrentPassword.Text))
             {
-                UpdateUserTable(currentUser.id, currentUser.username, textNewPassword.Text);
+                localDB.UpdateUserTable(currentUser.id, currentUser.username, textNewPassword.Text);
                 Toast.MakeText(this, "Password updated offline", ToastLength.Short).Show();
             }
             else

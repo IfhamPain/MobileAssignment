@@ -18,6 +18,7 @@ namespace testapp.Controllers
         ImageView imageView4;
         ImageView imageView5;
         ImageView imageView6;
+        FirebaseDB firebaseDB = new FirebaseDB();
         protected override void OnCreate(Bundle savedInstanceState)
         {
             base.OnCreate(savedInstanceState);
@@ -30,7 +31,7 @@ namespace testapp.Controllers
             imageView6 = FindViewById<ImageView>(Resource.Id.imageView6);
             string username = Intent.GetStringExtra("MyData") ?? ("Data not found");
 
-            if (IsConnected(this))
+            if (firebaseDB.IsConnected(this))
             {
                 DashboardActivity da = new DashboardActivity();
                 var Localitems = db.Query<ImageTable>("select imageUri from ImageTable where userName = ? and imageUri is not null", username);
