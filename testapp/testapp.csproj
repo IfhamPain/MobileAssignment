@@ -163,6 +163,7 @@
     <Compile Include="Controllers\LocalDB.cs" />
     <Compile Include="Controllers\UpdateUserActivity.cs" />
     <Compile Include="Controllers\DashboardActivity.cs" />
+    <Compile Include="Models\DeletedTable.cs" />
     <Compile Include="Models\Image.cs" />
     <Compile Include="Models\ImageTable.cs" />
     <Compile Include="Controllers\RegisterActivity.cs" />

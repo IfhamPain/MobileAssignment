@@ -3,53 +3,53 @@
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
-    <LinearLayout
-        android:orientation="horizontal"
-        android:minWidth="25px"
-        android:minHeight="25px"
-        android:layout_width="match_parent"
-        android:layout_height="50.0dp"
-        android:id="@+id/linearLayout1">
-        <TextView
-            android:text="Current Password"
-            android:layout_width="127.0dp"
-            android:layout_height="match_parent"
-            android:id="@+id/textViewCurPass"
-            android:layout_marginTop="14.5dp"
-            android:layout_marginLeft="9.0dp" />
-        <EditText
-            android:inputType="textPassword"
-            android:id="@+id/textCurrentPassword"
-            android:text="Password"
-            android:layout_width="224.0dp"
-            android:layout_height="match_parent"
-            android:layout_marginLeft="23.5dp" />
-    </LinearLayout>
-    <LinearLayout
-        android:orientation="horizontal"
-        android:minWidth="25px"
-        android:minHeight="25px"
-        android:layout_width="match_parent"
-        android:layout_height="50.0dp"
-        android:id="@+id/linearLayout1">
-        <TextView
-            android:text="New Password"
-            android:layout_width="94.0dp"
-            android:layout_height="wrap_content"
-            android:id="@+id/textViewNewPass"
-            android:layout_marginTop="0.5dp"
-            android:layout_marginLeft="8.0dp" />
-        <EditText
-            android:inputType="textPassword"
-            android:layout_width="224.0dp"
-            android:layout_height="wrap_content"
-            android:id="@+id/textNewPassword"
-            android:text="Password"
-            android:layout_marginLeft="58.5dp" />
-    </LinearLayout>
-    <Button
-        android:text="Update Password"
-        android:layout_width="match_parent"
+  <LinearLayout
+      android:orientation="horizontal"
+      android:minWidth="25px"
+      android:minHeight="25px"
+      android:layout_width="match_parent"
+      android:layout_height="50.0dp"
+      android:id="@+id/linearLayout1">
+    <TextView
+        android:text="Current Password"
+        android:layout_width="127.0dp"
+        android:layout_height="match_parent"
+        android:id="@+id/textViewCurPass"
+        android:layout_marginTop="14.5dp"
+        android:layout_marginLeft="9.0dp" />
+    <EditText
+        android:inputType="textPassword"
+        android:id="@+id/textCurrentPassword"
+        android:text="Password"
+        android:layout_width="224.0dp"
+        android:layout_height="match_parent"
+        android:layout_marginLeft="23.5dp" />
+  </LinearLayout>
+  <LinearLayout
+      android:orientation="horizontal"
+      android:minWidth="25px"
+      android:minHeight="25px"
+      android:layout_width="match_parent"
+      android:layout_height="50.0dp"
+      android:id="@+id/linearLayout1">
+    <TextView
+        android:text="New Password"
+        android:layout_width="94.0dp"
         android:layout_height="wrap_content"
-        android:id="@+id/btnUpdatePassword" />
+        android:id="@+id/textViewNewPass"
+        android:layout_marginTop="0.5dp"
+        android:layout_marginLeft="8.0dp" />
+    <EditText
+        android:inputType="textPassword"
+        android:layout_width="224.0dp"
+        android:layout_height="wrap_content"
+        android:id="@+id/textNewPassword"
+        android:text="Password"
+        android:layout_marginLeft="58.5dp" />
+  </LinearLayout>
+  <Button
+      android:text="Update Password"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:id="@+id/btnUpdatePassword" />
 </LinearLayout>

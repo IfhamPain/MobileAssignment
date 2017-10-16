@@ -42,7 +42,7 @@ namespace testapp
         {
             var currentUser = GetCurrentUser(user.Username); //Calling LocalDBs' GetCurrentUser method
 
-            if (currentUser.password.Equals(textCurrentPassword.Text))
+            if (currentUser.password.Equals(textCurrentPassword.Text)) //Updating the password in local db
             {
                 UpdateUserTable(currentUser.id, currentUser.username, textNewPassword.Text);
                 Toast.MakeText(this, "Password updated offline", ToastLength.Short).Show();

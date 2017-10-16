@@ -95,19 +95,19 @@ namespace testapp
 
         private void BtnUpdate_Click(object sender, EventArgs e)
         {
-            var currentUser = GetCurrentUser(user.Username);
+            //var currentUser = GetCurrentUser(user.Username);
             try
-            {
-                var localImageItems = db.Query<ImageTable>("select imageUri from ImageTable where userName = ? and imageUri is not null", currentUser.username);
+            {   //Retrieving the image uris of the user from local db and storing them in an array.
+                var localImageItems = db.Query<ImageTable>("select imageUri from ImageTable where userName = ? and imageUri is not null", user.Username);
                 var localImageList = new List<string>();
                 foreach (var imageUri in localImageItems)
                 {
                     localImageList.Add(imageUri.imageUri);
                     
                 }
-                if (!(localImageList.Contains(image.ImageUri)) && image.ImageUri != null)
+                if (!(localImageList.Contains(image.ImageUri)) && image.ImageUri != null) //If the selected image uri does not already exist in local db
                 {
-                    image.UserName = currentUser.username;
+                    image.UserName = user.Username;
                     InsertImage(image.ImageUri, image.UserName);
                 }
             }
@@ -134,7 +134,7 @@ namespace testapp
                 string userName = user.Username; //Retrieving the current username
                 Android.Net.Uri uri = data.Data;
                 imageViewPic.SetImageURI(uri);
-                image.ImageUri = uri.ToString();
+                image.ImageUri = uri.ToString(); //Storing the selected image uri image obj
                 btnUpdate.Enabled = true; //Enabling the update button
             }
         }
@@ -145,7 +145,7 @@ namespace testapp
                 var updatedLocalDb = GetCurrentUser(userName);
                 int userId = updatedLocalDb.id;
                 try
-                {
+                {   //Selecting the image uris of the current user from the local db
                     var Localitems = db.Query<ImageTable>("select imageUri from ImageTable where userName = ? and imageUri is not null", user.Username);
                     var localImageList = new List<String>();
                     if(Localitems != null)
